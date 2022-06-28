@@ -3,8 +3,9 @@ import fs from "fs";
 import path from "path";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-
-import matter from "gray-matter";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrism from "rehype-prism-plus";
 
 import Meta from "../../components/Meta";
 
@@ -59,13 +60,26 @@ export async function getStaticProps({
 }: {
     params: { slug: string };
 }) {
-    const sourceWithMeta = fs.readFileSync(
-        path.join("blog", slug + ".mdx"),
-        "utf8"
-    );
+    const source = fs.readFileSync(path.join("blog", slug + ".mdx"), "utf8");
 
-    const { data: frontMatter, content } = matter(sourceWithMeta);
-    const mdxSource = await serialize(content);
+    const mdxSource = await serialize(source, {
+        parseFrontmatter: true,
+        mdxOptions: {
+            rehypePlugins: [
+                rehypeSlug,
+                rehypePrism,
+                [
+                    rehypeAutolinkHeadings,
+                    {
+                        properties: {
+                            className: ["anchor"],
+                        },
+                    },
+                ],
+            ],
+            format: "mdx",
+        },
+    });
 
-    return { props: { source: mdxSource, meta: frontMatter, slug } };
+    return { props: { source: mdxSource, meta: mdxSource.frontmatter, slug } };
 }

@@ -4,8 +4,6 @@ import path from "path";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 
-import matter from "gray-matter";
-
 import Meta from "../../components/Meta";
 import Card from "../../components/Card";
 
@@ -46,20 +44,27 @@ export async function getStaticProps() {
 
     const files = fs.readdirSync(path.join("blog"));
 
-    const posts = files
-        .map((file) => {
+    const posts = await Promise.all(
+        files.map(async (file) => {
             const markdownWithMeta = fs.readFileSync(
                 path.join("blog", file),
                 "utf-8"
             );
-            const { data: frontMatter } = matter(markdownWithMeta);
+            const {
+                frontmatter: { title, date, description },
+            }: any = await serialize(markdownWithMeta, {
+                parseFrontmatter: true,
+            });
             return {
-                title: frontMatter.title,
-                date: frontMatter.date,
-                description: frontMatter.description,
+                title,
+                date,
+                description,
                 slug: file.replace(".mdx", ""),
             };
         })
+    );
+
+    posts
         .sort((a: any, b: any) => Date.parse(a.date) - Date.parse(b.date))
         .reverse();
 
