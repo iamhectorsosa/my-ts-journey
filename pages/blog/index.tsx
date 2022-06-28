@@ -17,7 +17,7 @@ const Blog: NextPage | any = ({
     return (
         <>
             <Meta title={"Blog"} path={"/blog"} />
-            <div className='prose lg:prose-xl max-w-3xl mx-auto px-4 my-9'>
+            <div className='prose lg:prose-xl prose-headings:pt-6 max-w-3xl mx-auto px-4 my-9'>
                 <MDXRemote {...source} />
             </div>
             <section className='grid md:grid-cols-2 gap-4 max-w-3xl mx-auto px-4 my-9'>

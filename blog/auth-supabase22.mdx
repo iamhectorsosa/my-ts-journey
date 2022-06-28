@@ -27,7 +27,7 @@ First thing is first. Once we have our application ready. We only need **one** d
 
 You need to pass in two [parameters](https://supabase.com/docs/reference/javascript/initializing#parameters): (1) your Supabase Url and (2) your Supabase Key. I've extracted this to a separate file:
 
-```javascript
+```javascript showLineNumbers
 import { createClient } from "@supabase/supabase-js";
 
 export default createClient(
@@ -40,7 +40,7 @@ export default createClient(
 
 By default, Supabase uses [third-party OAuth providers](https://supabase.com/docs/guides/auth#providers) using the `signIn()` method. The method gives you access to a `user`, `session`, and `error` object. Here's the code you'll need for that:
 
-```javascript
+```javascript showLineNumbers
 const { user, session, error } = await supabase.auth.signIn({
   // provider can be 'github', 'google', 'gitlab', and more
   provider: 'github'
@@ -55,7 +55,7 @@ You can take a look at the demo project: [Social Providers](https://social-provi
 
 In the sample project, I've added a button with an `onClick` function that handles the `signIn()` method like this:
 
-```javascript
+```javascript showLineNumbers
 <button onClick={() => auth("google")}>
   Continue with Google
 </button>
@@ -66,7 +66,7 @@ In the sample project, I've added a button with an `onClick` function that handl
 
 I've repurposed the function to change the provider depending on the authentication option that the user clicks. The handler function looks like this:
 
-```javascript
+```javascript showLineNumbers
 /* I've chosen not to add the user, session and error objects for simplicity */
 const auth = async (provider: Provider) => {
     await supabase.auth.signIn({
@@ -79,7 +79,7 @@ Once the user has successfully authenticated, they will get redirected to either
 
 To capture and load the user information, I've added a handler function using the `user()` method that gathers the information for our application and store it in state:
 
-```javascript
+```javascript showLineNumbers
 useEffect(() => {
     const getUser = () => {
         const supabaseUser = supabase.auth.user();
@@ -98,7 +98,7 @@ useEffect(() => {
 
 It depends on the Authentication service and provider. The sample project is using Supabase to handle authentication and surprisingly enough it captures very little information regarding the User compared to other authentication services. Here is an example of what the `user_metadata` object would look like:
 
-```json
+```json showLineNumbers
 {
     avatar_url: "https://avatars.githubusercontent.com/u/{..}",
     email: "hello@hectorsosa.me",

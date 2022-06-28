@@ -17,7 +17,7 @@ We'll be using [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [M
 
 This is the live [demo](https://contact-ekqt.vercel.app/) (so feel free to leave me a comment and try it out) and here's how to get our project started:
 
-```bash
+```bash showLineNumbers
 # React Typescript Next.js
 $ npx create-next-app@latest --typescript
 # Next.js Sass Support
@@ -36,7 +36,7 @@ Feel free to go ahead and grab a copy of the demo's [GitHub Repo](https://github
 
 You will need to create a form to capture the user's contact message. I've decided to provide fields for: (a) User(name), (b) Email and (c) Comment. I'm using React's `useState()` API to manage my form's state. You can learn more about it [here](https://github.com/ekqt/contact). The form's data structure I'm using looks like this:
 
-```typescript
+```typescript showLineNumbers
 type FormType {
     user: string;
     email: string;
@@ -46,7 +46,7 @@ type FormType {
 
 Once your form is created, let's focus on form submission. Let's take a look at what happens when the user submits his form:
 
-```javascript
+```javascript showLineNumbers
 const handleSubmit = async (e) => {
     /** Let's use this method to explicitly control the submission event */
     e.preventDefault();
@@ -75,7 +75,7 @@ const handleSubmit = async (e) => {
 
 Form validation is taking place only at the email level. It's in our best interest that the user provides a valid email address and the easiest way to check this is by using a Regular Expression.
 
-```javascript
+```javascript showLineNumbers
 const formValidation = (email) => {
     /** The test() method executes a search for a match and returns true or false */
     let emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email);
@@ -110,7 +110,7 @@ Before we discuss how our Next.js API's handler submits our form data to Notion.
 3. Fill out the required information and do not forget to enabled all *Content Capabilities* (Read, Update, Insert). You may need to have an existing notion workspace, if you don't have one, see [here](https://www.notion.so/help/create-delete-and-switch-workspaces).
 4. Once you submit the form you will have access to your integration's **Internal Integration Token**, this is what we'll define and save in our project's environment variables as `NOTION_KEY`. Drop this in your `.env.local` file, here's more information on [how to set environment variables](https://nextjs.org/docs/basic-features/environment-variables) in your Next.js project.
 
-```bash
+```bash showLineNumbers
 NOTION_KEY=<YOUR_INTERNAL_INTEGRATION_NOTION_KEY>
 ```
 
@@ -120,7 +120,7 @@ Environment variables is the way we will identify and authenticate our API handl
 
 [Here](https://www.notion.so/help/guides/creating-a-database) is a quick guide on creating a database. Once you have created your database you need to capture its ID and also enable it (Share it) with your integration. In your database options, you can click on **Copy link to view** and from that URL you can extract your database ID, here's an example of how that looks, it should be the first path before the `v` URL parameter:
 
-```http
+```http showLineNumbers
 https://www.notion.so/<NOTION_CONTACT_DATABASE_ID>?v=<...>
 ```
 
@@ -134,7 +134,7 @@ Updates and notifications help you stay on top of work that needs your attention
 
 We will use a Shell snippet from [List all users](https://developers.notion.com/reference/get-users) to make a request and get our User ID.
 
-```shell
+```shell showLineNumbers
 curl 'https://api.notion.com/v1/users' \
   -H 'Authorization: Bearer '"$NOTION_KEY"'' \
   -H "Notion-Version: 2022-02-22"
@@ -148,7 +148,7 @@ If you need help making this request, check out my [Beginner's Guide to Working 
 
 The response should look something like this:
 
-```json
+```json showLineNumbers
 {
     "object": "list",
     "results": [
@@ -168,7 +168,7 @@ You need to make sure to assign a Person type user and defined his/her ID in you
 
 As a roundup, here's how your `.env.local` file should look like:
 
-```bash
+```bash showLineNumbers
 NOTION_KEY=<YOUR_NOTION_KEY>
 NOTION_CONTACT_DATABASE_ID=<YOUR_NOTION_CONTACT_DATABASE_ID>
 NOTION_ADMIN_ID=<YOUR_NOTION_ADMIN_ID>
@@ -178,7 +178,7 @@ NOTION_ADMIN_ID=<YOUR_NOTION_ADMIN_ID>
 
 In your project directory, you should have a folder named **'API'**. Here we will create a folder named **'Contact'** and finally a file named `index.ts` (extension subject to your language). Whenever the API route `/api/contact` gets called, this file will handle the HTTP request. Here's what you need there:
 
-```javascript
+```javascript showLineNumbers
 /** Import Notion SDK for JavaScript */
 import { Client } from "@notionhq/client";
 

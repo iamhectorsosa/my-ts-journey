@@ -51,7 +51,7 @@ The `options` object passed into the `IntersectionObserver()` constructor lets y
 
 Whenever the target meets a threshold specified for the `IntersectionObserver`, the callback is invoked. The callback receives a list of [IntersectionObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry) objects and the observer:
 
-```javascript
+```javascript showLineNumbers
 const callback = (entries) => {
     entries.forEach((entry) => {
         // Each entry describes an intersection change for one observed
@@ -66,7 +66,7 @@ const callback = (entries) => {
 
 The code snippet below shows a callback which keeps a counter of how many times elements intersected the root by at least 75%. For a threshold value of 0.0 (default) the callback is called upon transition of the value of `isIntersecting`. The snippet thus first checks that the transition is a positive one, then determines whether `intersectionRatio` is above 75%, in which case it increments the counter.
 
-```javascript
+```javascript showLineNumbers
 let counter = 0;
 
 const callback = (entries) => {
@@ -84,7 +84,7 @@ Our demo was built as a React application. However, keep in mind that the **Inte
 
 Identifying an element to be observed is as easy as selecting a DOM element based on a CSS selector. You can either define your own selector of choice (like data attribute, id or class) or choose one from the existing markup. In this case, this is how the markup looks like:
 
-```html
+```html showLineNumbers
 <section id="campaign" ref="{campaignRef}">
     <HeroText />
 </section>
@@ -94,7 +94,7 @@ Identifying an element to be observed is as easy as selecting a DOM element base
 
 Once I have identified (and defined) what content I want to observe, I initialize an instance of `IntersectionObserver` and with a callback and configuration options.
 
-```javascript
+```javascript showLineNumbers
 const callback = (entries: any) => {
     entries.map((i: any) => {
         i.isIntersecting ? setVisible(true) : setVisible(false);

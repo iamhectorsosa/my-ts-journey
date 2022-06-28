@@ -2,24 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-pre[class*='language'] {
-  @apply px-8 py-8
+* {
+    scroll-behavior: smooth;
 }
 
-code[class*='language-'],
-pre[class*='language-'] {
-  @apply text-sky-300;
+pre[class*="language"] {
+    @apply px-8 py-8;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+    @apply text-sky-300;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  @apply text-lime-700;
+    @apply text-lime-700;
 }
 
 .token.punctuation {
-  @apply text-gray-300;
+    @apply text-gray-300;
 }
 
 .token.tag,
@@ -28,7 +32,7 @@ pre[class*='language-'] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-  @apply text-emerald-500;
+    @apply text-emerald-500;
 }
 
 .token.selector,
@@ -37,7 +41,7 @@ pre[class*='language-'] {
 .token.char,
 .token.builtin,
 .token.inserted {
-  @apply text-orange-400;
+    @apply text-orange-400;
 }
 
 .token.operator,
@@ -45,55 +49,55 @@ pre[class*='language-'] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  @apply text-yellow-600;
+    @apply text-yellow-600;
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword,
 .token.property {
-  @apply text-sky-600;
+    @apply text-sky-600;
 }
 
 .token.function,
 .token.class-name {
-  @apply text-yellow-200;
+    @apply text-yellow-200;
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-  @apply text-yellow-600;
+    @apply text-yellow-600;
 }
 
 .line-number::before {
-  @apply w-4 text-right ml-0 mr-5 inline-block text-gray-400;
-  content: attr(line);
+    @apply w-4 text-right ml-0 mr-5 inline-block text-gray-400;
+    content: attr(line);
 }
 
 .prose .anchor {
-  @apply absolute invisible no-underline;
+    @apply absolute invisible no-underline;
 
-  margin-left: -0.8em;
-  padding-right: 0.4em;
-  width: 80%;
-  max-width: 700px;
-  cursor: pointer;
+    margin-left: -0.8em;
+    padding-right: 0.4em;
+    width: 80%;
+    max-width: 700px;
+    cursor: pointer;
 }
 
 .anchor:hover {
-  @apply visible;
+    @apply visible;
 }
 
 .prose a {
-  @apply transition-all;
+    @apply transition-all;
 }
 
 .prose .anchor:after {
-  @apply text-gray-300 dark:text-gray-700;
-  content: '#';
+    @apply text-cyan-500;
+    content: "#";
 }
 
 .prose *:hover > .anchor {
-  @apply visible;
+    @apply visible;
 }
