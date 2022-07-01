@@ -50,10 +50,10 @@ const Meta = ({
 };
 
 Meta.defaultProps = {
-    title: "MDX Project Starter",
+    title: "My TypeScript Journey",
     keywords: "Next.js, React, TypeScript, Tailwind CSS, MDX",
-    description: "The easiest way to have a blog with Next.js",
-    baseUrl: "https://mdx-project-starter.vercel.app",
+    description: "TypeScript all things, this project is intended to be an independent blog to keep track of my TS journey.",
+    baseUrl: "https://my-ts-journey.vercel.app",
     path: "/",
     image: "/home.png",
 };

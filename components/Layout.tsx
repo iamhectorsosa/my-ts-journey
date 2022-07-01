@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: any }) {
             <Navbar />
             {children}
             <Footer />
-            <GitHubCorner accent={"rgb(8, 145, 178)"} href={"https://github.com/ekqt/mdx-project-starter"} />
+            <GitHubCorner accent={"rgb(2, 132, 199)"} href={"https://github.com/ekqt/my-ts-journey"} />
         </>
     );
 }
