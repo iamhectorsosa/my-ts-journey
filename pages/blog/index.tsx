@@ -24,7 +24,7 @@ const Blog: NextPage | any = ({ posts }: { posts: any }) => {
                         title={post.title}
                         date={post.date}
                         description={post.description}
-                        index={(posts.indexOf(post) + 1)
+                        index={([...posts].reverse().indexOf(post) + 1)
                             .toString()
                             .padStart(3, "0")}
                     />
