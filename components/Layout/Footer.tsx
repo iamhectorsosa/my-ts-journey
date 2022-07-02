@@ -1,9 +1,9 @@
 export default function Footer() {
     return (
         <footer>
-            <div className='max-w-4xl px-4 pt-12 py-24 mx-auto sm:px-6'>
+            <div className='max-w-5xl px-4 pt-6 py-24 mx-auto sm:px-6'>
                 <div className='sm:flex sm:items-center sm:justify-between sm:content-center'>
-                    <div className='text-center sm:text-left text-sky-600 font-bold text-xl '>
+                    <div className='text-center sm:text-left text-grey-500 font-bold text-xl '>
                         My TS Journey
                     </div>
 

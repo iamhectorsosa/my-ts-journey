@@ -7,5 +7,15 @@ module.exports = {
     theme: {
         extend: {},
     },
-    plugins: [require('@tailwindcss/typography')],
+    plugins: [require("@tailwindcss/typography"), require("daisyui")],
+    daisyui: {
+        themes: ["night"],
+        // themes: [
+        //     {
+        //         mytheme: {
+        //             "base-100": "#1f2937",
+        //         },
+        //     },
+        // ],
+    },
 };

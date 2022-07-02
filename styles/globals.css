@@ -11,9 +11,17 @@
     text-rendering: optimizeLegibility;
 }
 
-pre[class*="language"] {
-    @apply px-8 py-8;
+.mockup-code pre {
+    margin: 0;
 }
+
+.mockup-code pre:before {
+    margin: 0;
+}
+
+/* pre[class*="language"] {
+    @apply px-8 py-8;
+} */
 
 code[class*="language-"],
 pre[class*="language-"] {
@@ -99,10 +107,16 @@ pre[class*="language-"] {
 }
 
 .prose .anchor:after {
-    @apply text-sky-500;
+    @apply text-gray-500;
     content: "#";
 }
 
 .prose *:hover > .anchor {
     @apply visible;
+}
+
+@media (max-width: 768px) {
+    .prose .anchor:after {
+        @apply text-transparent;
+    }
 }

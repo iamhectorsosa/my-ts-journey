@@ -5,6 +5,12 @@ import getMdx from "../../utils/getMdx";
 import { MDXRemote } from "next-mdx-remote";
 import Meta from "../../components/Meta";
 
+import CustomPre from "../../components/MDXComponents/CustomPre";
+
+const components = {
+    pre: CustomPre,
+};
+
 const Post: NextPage | any = ({
     source,
     meta,
@@ -20,10 +26,13 @@ const Post: NextPage | any = ({
                 title={meta.title}
                 path={`/blog/${slug}`}
                 description={meta.description}
-                image={meta.thumbnailUrl}
             />
-            <div className='prose lg:prose-xl prose-headings:pt-6 max-w-3xl mx-auto px-4 my-9'>
-                <MDXRemote {...source} />
+            <div className='max-w-3xl mx-auto px-4 mt-3 mb-9'>
+                <h1 className='text-6xl font-bold mb-4'>{meta.title}</h1>
+                <p className='text-gray-400 text-sm'>Published: {meta.date}</p>
+            </div>
+            <div className='prose lg:prose-lg prose-headings:pt-0  prose-p:text-justify max-w-3xl mx-auto px-4 mt-3 mb-9'>
+                <MDXRemote {...source} components={components} />
             </div>
         </>
     );
