@@ -19,10 +19,6 @@
     margin: 0;
 }
 
-/* pre[class*="language"] {
-    @apply px-8 py-8;
-} */
-
 code[class*="language-"],
 pre[class*="language-"] {
     @apply text-sky-300;
@@ -45,7 +41,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-    @apply text-emerald-500;
+    @apply text-emerald-600;
 }
 
 .token.selector,
@@ -72,9 +68,12 @@ pre[class*="language-"] {
     @apply text-sky-600;
 }
 
-.token.function,
-.token.class-name {
+.token.function {
     @apply text-yellow-200;
+}
+
+.token.class-name {
+    @apply text-emerald-400;
 }
 
 .token.regex,
