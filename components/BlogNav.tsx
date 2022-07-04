@@ -20,7 +20,7 @@ export default function BlogNav({ posts }: { posts: any[] }) {
         <>
             {next?.slug ? (
                 <Link href={"/blog/" + next?.slug} passHref>
-                    <a className='w-fit flex gap-2 py-2 text-2xl font-bold text-gray-400 hover:text-gray-100'>
+                    <a className='w-fit flex gap-2 py-2 text-2xl font-bold hover:text-gray-200'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             className='h-8 w-8'
@@ -43,7 +43,7 @@ export default function BlogNav({ posts }: { posts: any[] }) {
             )}
             {previous?.slug ? (
                 <Link href={"/blog/" + previous?.slug} passHref>
-                    <a className='w-fit flex gap-2 py-2 text-2xl font-bold text-gray-400 hover:text-gray-100'>
+                    <a className='w-fit flex gap-2 py-2 text-2xl font-bold hover:text-gray-200'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             className='h-8 w-8'
