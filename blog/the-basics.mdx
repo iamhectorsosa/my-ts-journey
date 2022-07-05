@@ -8,7 +8,7 @@ description: Every value in JavaScript has a set of behaviors you can observe fr
 
 We can identify `TypeError` mistakes by identifying primitives at runtime using the `typeof` operator with the exception of things like functions where there is no corresponding runtime mechanism to identify their types. For example:
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 function fn(x) {
     return x.flip();
 }
@@ -28,7 +28,7 @@ _Static type systems_ describe the shapes and behaviorsof what our values will b
 
 There are cases where the ECMASCript specification doesn't have explicit instructions on how the language should behave when it runs into something unexpected. The easiest example is when accessing a property that doesn't exist, JavaScript gives us a different behavior and returns the value `undefined`.
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 const user = {
     name: "Daniel",
     age: 28,

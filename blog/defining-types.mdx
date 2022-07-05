@@ -10,7 +10,7 @@ TypeScript extends the list of JavaScript primitive types adding `unknown` and `
 
 The objects consuming a function that returns an `unknown` type cannot be used until the type has been declared to TypeScript. This can be used to ensure that API consumers think about their typing up-front:
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 const jsonParse = (jsonString: string): unknown => JSON.parse(jsonString);
 
 interface User {
@@ -28,7 +28,7 @@ const myUserAccount = jsonParse(`{ "name" : "Samuel" }`) as User;
 
 Because TypeScript supports code flow analysis, the language needs to be able to represent when code logically cannot happen. TypeScript can infer the type `never` when code logically cannot happen, for example:
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 const neverReturns = () => {
     throw new Error('Always throws, never returns');
 }
@@ -37,7 +37,7 @@ const neverReturns = () => {
 
 However, a value type `never` can still be passed around like other values. It is useful when dealing with the unpredictability of JavaScript and API consumers that might not be using types:
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 const validateUser = (user: User) => {
     if (user) {
         return user.name !== 'Nan';

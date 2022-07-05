@@ -10,7 +10,7 @@ With TypeScript, you can create complex types by combining simple ones. There ar
 
 **Unions** declare that a type could be one of many. We can use this to describe a set of `string` or `number` literals that a value is allowed to be. They can also be helpful to handle different types as well (i.e. in a function):
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 type WindowStates = "open" | "closed" | "minimized";
 type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 
@@ -21,7 +21,7 @@ function getLength(obj: string | string[]) {
 
 **Generics** provides variables to types. A common example is an array. An array without generics could contain anything. An array with generics can describe the values that the array contains.
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 type StringArray = Array<string>;
 type NumberArray = Array<number>;
 type ObjectWithNameArray = Array<{ name: string }>
@@ -33,7 +33,7 @@ In TypeScript, type checking focuses on the _shape_ that values have. This is re
 
 TypeScript compares the shape of an object in the type-check. If they have the same shape, the code passes. The shape-matching only requires a subset of the object's fields to match.
 
-```TypeScript withLineNumbers
+```TypeScript showLineNumbers
 interface Point {
     x: number;
     y: number;
