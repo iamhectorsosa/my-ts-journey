@@ -1,0 +1,106 @@
+---
+title: Narrowing
+date: "Jul 6, 2022"
+description: Understand how TypeScript recudes the amount of type syntax in your projects...
+---
+
+Much like how TypeScript analyzes runtime values using static types, it overlays type analysis on JavaScript's runtime control flow constructs like `if/else`, conditional ternaries, loops, truthiness checks, etc., which can all affect those types.
+
+By using _narrowing_, TypeScripts makes use of control flow constructs as a special form of code called a _type guard_. TypeScript follows possible paths of execution that our programs can take to analyze the most specific possible type of a value at a given position.
+
+There are a couple of different constructs TypeScript understands for narrowing.
+
+## `typeof` type guards
+
+JavaScript supports a `typeof` operator which can give very basic information about the type of values we have at runtime and TypeScript can understand it to narrow types in different branches.
+
+```TypeScript showLineNumbers
+function printAll(strs: string | string[] | null) {
+  if (typeof strs === "object") {
+    for (const s of strs) {
+/* Object is possibly 'null'. */
+      console.log(s);
+    }
+  } else if (typeof strs === "string") {
+    console.log(strs);
+  } else {
+    // do nothing
+  }
+}
+```
+
+We have to be careful using `typeof` in JavaScript because of its quirks. In the example shown above, you wouldn't expect it but in JavaScript, `typeof null` is actually an type of "Object".
+
+## Truthiness narrowing
+
+Not a word, but definitely a JavaScript concept. Using any expressional in conditionals, `&&`, `||`, `if` statements, Boolean negations `!`, and more. In JavaScript, `if` statements don't expect their conditions to always have the type `boolean`.
+
+```TypeScript showLineNumbers
+function getUsersOnlineMessage(numUsersOnline: number) {
+  if (numUsersOnline) {
+    return `There are ${numUsersOnline} online now!`;
+  }
+  return "Nobody's here. :(";
+}
+```
+
+In JavaScript, constructs like `if` first "coerce" their conditions to `boolean` to make sense of them, and then choose their brances depending on whether the result is `true` or `false`.
+
+For example, values such as:
+
+-   `0`
+-   `Nan`
+-   `""` (the empty string)
+-   `0n` (the `biginit` version of zero)
+-   `null`
+-   `undefined`
+
+All coerce to `false`, and other values get coerced `true`. You can always coerce values to `boolean` by running them through the `Boolean` function, or by using the shorter double-Boolean negation `!!`. This is helpful to guard against values like `null` and `undefined`. Here's an example using the `printAll` function we used before:
+
+```TypeScript showLineNumbers
+function printAll(strs: string | string[] | null) {
+  if (strs && typeof strs === "object") {
+    for (const s of strs) {
+      console.log(s);
+    }
+  } else if (typeof strs === "string") {
+    console.log(strs);
+  }
+}
+```
+
+## Equality narrowing
+
+TypeScript also uses `switch` statements and equality checks like `===`, `!==`, `==`, and `!=` to narrow types. Checking against specific literal values (as opposed to variables) also works `if(str !== null)`.
+
+JavaScript's looser equality checks with `==` and `!=` also gets narrowed correctly. Checking against `null` also checks whether it's potentially `undefined` as well and the same works the other way around.
+
+## The `in` operator narrowing
+
+JavaScript has an operator for determining if an object has a property with a name: the `in` operator. The `in` operator returns true if the specified property is in the specified object or its prototype chain.
+
+```TypeScript showLineNumbers
+class Animal {
+  name: string;
+  constructor(name: string) { this.name = name }
+}
+
+class Fish extends Animal {
+  swim() { console.log(`Hi, I am ${this.name} and I'm swimming`) }
+}
+
+class Bird extends Animal {
+  fly() { console.log(`Hi, I am ${this.name} and I'm flying`) }
+}
+
+const dory = new Fish("Dory");
+const bp = new Bird("Bird Person");
+
+function move(animal: { swim: () => void } | { fly: () => void }) {
+  "swim" in animal ? animal.swim() : animal.fly();
+}
+
+move(dory);
+move(bp);
+```
+TBC: [Using type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
