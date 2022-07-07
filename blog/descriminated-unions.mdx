@@ -1,0 +1,66 @@
+---
+title: Discriminated Unions
+date: "Jul 7, 2022"
+description: Using string literal types in unions helps us strictly handle complex structures...
+---
+
+We are able to narrow single variables with simple primitive types. While this is common, most of the time in JavaScript structures are slighly more complex.
+
+We can use the union of string literal types, such as `circle` and `square` in a shape object, to tell us whether we should treat the property of an object respectively. Using literal types instead of primitive one like `string` can avoid misspelling issues.
+
+```TypeScript showLineNumbers
+interface Shape {
+    kind: "circle" | "square";
+    radius?: number;
+    sideLength?: number;
+}
+```
+
+The issue here is that we need to take into account the optional properties we have defined. Where a kind `circle` may have a `radius`, it will not have a `sideLength` and the other way around. To make this interface work, we set both of this properties as optional. If we access them to return a value within a function, their type will be `number | undefined` and TypeScript will indicate that the Object is possibly 'undefined'.
+
+> We've hit a point where we know more about our values than the type checker does.
+
+Even if it isn't ideal, here we can use a non-null assertion (a `!` after `shape.radius`) to say that `radius` is definitely present.
+
+```TypeScript showLineNumbers
+function getArea(shape: Shape) {
+    if (shape.kind === "circle") {
+        return Math.PI * shape.radius! ** 2;
+    }
+}
+```
+
+This solution is error-prone if we start moving code around. Additional, outside of `strictNullChecks` we're able to accidentally access any of those fields anyway (since optional properties are just assumed to always be present when reading them). We can do better.
+
+The problem with this encoding of Shape is that the type-checker doesn't have any way to know whether or not `radius` or `sideLength` are present based on the `kind` property. A better approach would be:
+
+```TypeScript showLineNumbers
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+
+interface Square {
+    kind: "square";
+    sideLength: number;
+}
+
+type Shape = Circle | Square;
+```
+
+Now that `Shape` is a union. We would have to narrow the by `kind` before accessing `radius` or `sideLength` properties.
+
+```TypeScript showLineNumbers
+function getArea(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+  }
+}
+```
+
+> When every type in a union contains a common property with literal types (such as `kind`), TypeScript considers taht to be a _discriminated union_, and can narrow out the members of the union.
+
+TBC: [More on Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html)
