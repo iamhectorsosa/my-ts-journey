@@ -1,7 +1,41 @@
 ---
 title: Writing Good Generic Functions
 date: "Jul 14, 2022"
-description: Writing generic functions is fun, and it can be easy to get carried away with type parameters.
+description: When writing generic functions it's easy to get carried away...
 ---
 
-TBC: [Guidelines for Writing Good Generic Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html#guidelines-for-writing-good-generic-functions)
+Writing generic functions is fun but taking it too far can make inference less successful.
+
+## Push Type Parameters Down
+
+> When possiblee, use the type parameter itself rather than constraining it.
+
+```TypeScript showLineNumbers
+function firstElement1<Type>(arr: Type[]): Type | undefined {
+  return arr.shift()
+}
+```
+
+This function is better than extending the type in `<Type extends any[]>`. This would infer the return type as `any` because TypeScript has to resolve the return expression using the constrain type, rather than 'waiting' to resolve the element during a call.
+
+## Use Fewer Type Parameters
+
+> Always use as few type parameters as possible.
+
+```TypeScript showLineNumbers
+function customFilter<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
+    return arr.filter(func);
+}
+```
+
+## Type Parameters Should Appear Twice
+
+> If a type parameter only appears in one location, strongly reconsider if you actually need it.
+
+Type parameters are for relating the types of multiple values. Otherwise, it isn't relating to anything. This doesn't make sense:
+
+```TypeScript showLineNumbers
+function greet<Str extends string>(s: Str){
+    console.log(`Hello, ${s}`);
+}
+```
