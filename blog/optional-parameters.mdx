@@ -4,4 +4,16 @@ date: "Jul 15, 2022"
 description: We can model our parameers in TypeScript as optional by marking them with ?
 ---
 
-TBC: [Optional Parameters](https://www.typescriptlang.org/docs/handbook/2/functions.html#optional-parameters)
+## Optional Parameters
+
+Functions in JavaScript often take a variable number of arguments. For example, `toFixed` method of `number` takes an optional digit count:
+
+```TypeScript showLineNumbers
+function func(n: number) {
+    console.log(n.toFixed()); // 0 arguments
+    console.log(n.toFixed(3)); // 1 argument
+}
+```
+Let's say we would like to make our `func` functional take optional parameters as `toFixed` method does, we can model this in TypeScript by marking the parameter as *optional* with `?`: `function func(x?: number)`. However, although the prameter is specified as type `number`, the `x` parameter will actually have the type `number | undefined` because unspecified parameters in JavaScript get the value `undefined`.
+
+We can also provide a *default* parameter using `function func(x = 10)`. When we initialize the parameter we can also make use of inference and do not have to explicitly declare the parameter's type.
