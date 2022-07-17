@@ -1,0 +1,90 @@
+---
+title: More Stuff on Functions
+date: "Jul 17, 2022"
+description: And yet, there is still more to know about Functions in TypeScript...
+---
+
+## Declaring `this` in a function
+
+TypeScript will infer what the `this` should be in a function via code flow analysis, for example:
+
+```TypeScript showLineNumbers
+const user = {
+    id: 123,
+    admin: false,
+
+    becomeAdmin: function() {
+        this.admin = true;
+    }
+}
+```
+
+There are cases where you need more control over what object `this` means. JavaScript specification states that you cannot have a parameter called `this`, so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+
+```TypeScript showLineNumbers
+interface DB {
+    filterUsers(filter: (this: User) => boolean): User[];
+}
+
+const db = getDB();
+const admins = db.filterUsers(function (this: User)) {
+    return this.admin;
+}
+```
+
+Note that you need to use `function` and not arrow functions to get this behavior.
+
+## Other Types to Know about
+
+### `void`
+
+`void` represents the return value of cuntions which don't return a value. It's the inferred type any time a function doesn't have any `return` statements, or doesn't return any explicit value from those return statements:
+
+```TypeScript showLineNumbers
+// The inferred return type is void
+// function noop(): void
+function noop(){
+    return;
+}
+```
+
+In JavaScript, a function that doesn't return any value will implicitly return the value `undefined`. However, `void` and `undefined` are not the same thing in TypeScript. There are further details at the end of this chapter.
+
+### `object`
+
+The special type `object` refers to any value that isn't a primitive. This is different from the _empty object type_ `{}`, and also different from the global type `Object`.
+
+> `object` is **NOT** `Object`. **Always** use `object`!
+
+Note that in JavaScript, function values are objects. They have properties, have `Object.prototype` in their prototype chain, are `instanceof Object`, you can call `Object.keys` on them, and so on. For this reason, function types are considered to be `object`s in TypeScript.
+
+### `unknown`
+
+The `unknown` type represents _any_ value. This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value.
+
+This is useful when describing function types because you can describe functions that accept any value without having `any` values in your function body.
+
+Conversly, you can describe a function that returns a value of unknown type:
+
+```TypeScript showLineNumbers
+function safeParse(s: string) :unknown {
+    return JSON.parse(s);
+}
+
+const obj = safeParse(someRandomString);
+```
+
+### `never`
+
+Some functions _never_ return a value:
+
+```TypeScript showLineNumbers
+function fail(msg: string): never {
+    throw new Error(msg);
+}
+```
+The `never` type represents values which are *never* observed. In a return type, this means that the function throws an exception or terminates execution of the program. `never` also appears when TypeScript determines there's nothing left in a union.
+
+### `Function`
+
+The global type `Function` describes properties like `bind`, `call`, `apply`, and others present on all function values in JavaScript. It also has the special property that values of type `Function` can always be called; these calls return `any`.
