@@ -1,7 +1,46 @@
 ---
 title: Rest Parameters and Arguments
-date: "Jul 18, 2022"
+date: "Jul 19, 2022"
 description: Rest Parameters, Arguments, Parameter Destructuring and more...
 ---
 
-TBC: [Rest Parameters and Arguments](https://www.typescriptlang.org/docs/handbook/2/functions.html#rest-parameters-and-arguments)
+### Rest Parameters
+
+We can also define functions that take an _unbounded_ number of arguments using _rest parameters_. A rest parameter appears after all other parameters, and uses the `...` syntax:
+
+```TypeScript showLineNumbers
+function multiple(n: number, ...m: number[]){
+    return m.map((x) => n * x);
+}
+
+const a = multiple(10, 1, 2, 3, 4); // 'a' gets value [10, 20, 30, 40]
+```
+
+### Rest Arguments
+
+In general, TypeScript does not assume that arrays are immutable. This can lead to some surprising behavior:
+
+```TypeScript showLineNumbers
+// Without const this will not pass
+const args = [8, 5] as const;
+const angle = Math.atan2(...args);
+```
+
+## Parameter Destructuring
+
+You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the funcion body. The type annotation for the object goes after the destructuring syntax:
+
+```TypeScript showLineNumbers
+function sum({a, b, c}: {a: number, b: number, c: number}) {
+    console.log(a + b + c);
+}
+```
+
+This can look a bit verbose, but you can use a named type here as well:
+
+```TypeScript showLineNumbers
+type ABC = { a: number; b: number; c: number };
+function sum({a,b,c}: ABC) {
+    console.log(a + b + c);
+}
+```
