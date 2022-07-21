@@ -1,7 +1,111 @@
 ---
 title: Object Types
-date: "Jul 20, 2022"
+date: "Jul 21, 2022"
 description: Objects are the fundamental way that we group and pass around data...
 ---
 
-TBC: [Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html)
+_Object types_ in TypeScript can be anonymous, declared using an interface or a type alias:
+
+```TypeScript showLineNumbers
+function greet(person: { name: string; age: number }) {
+    return "Hello " + person.name;
+}
+
+interface Person {
+    name: string;
+    age: number;
+}
+
+// type Person = { name: string; age: number; };
+
+function greetv2(person: Person) {
+    return "Hello " + person.name;
+}
+```
+
+All three examples are making use of the same object type.
+
+## Property Modifiers
+
+Each property in an object type can specify a couple of things: (a) the type, (b) whether the property is optional, and (c) whether the property can be written to.
+
+### Optional Properties
+
+Much of the time, we'll find ourselves dealing with objects that _might_ have a property set. We can mark then as _optional_ by adding `?` to the end of their names:
+
+```TypeScript showLineNumbers
+interface PaintOptions {
+    shape: Shape;
+    xPos?: number; // Optional
+    yPost?: number; // Optional
+}
+
+function paintShape(opts: PaintOptions) {...}
+```
+
+> All optionality really says is that if the property is _set_, it better have a specific type.
+
+We can also read from those properties - but when we do under `strictNullChecks`, TypeScript will tell us they're potentially `undefined`.
+
+The pattern of setting default for unspecified values is so common that JavaScript has syntax to support it.
+
+```TypeScript showLineNumbers
+function paintShape({ shape, xPos = 0, yPos = 0}: PaintOptions) {...};
+```
+
+> Note we cannot place type annotations within destructuring patterns.
+
+### `readonly` Properties
+
+Properties can also be marked as `readonly` for TypeScript. While it won't change any behavior at runtime, a property marked as `readonly` can't be written to during type-checking.
+
+```TypeScript showLineNumbers
+interface SomeType {
+    readonly prop: string;
+}
+
+function doSomething(obj: SomeType) {
+    console.log(obj.prop); // OK
+    obj.prop = 'Hello'; // Not OK
+}
+```
+
+Using the `readonly` modifier doesn't necessarily imply that a value is totally immutable - or in other words, that its internal contents can't be changed. It just means that property itself can't be re-written to.
+
+```TypeScript showLineNumbers
+interface Home {
+    readonly resident: { name: string, age: number };
+}
+
+function doSomething(home: Home) {
+    home.resident.age++ // OK
+    home.resident = { name: "Victor", age: 42 }; // Not OK
+}
+```
+
+### Index Signatures
+
+Sometimes you don't know all the names of a type's properties ahead of time, but you do know the shape of the values.
+
+In those cases, you can use an index signature to describe the types of possibles values, for example:
+
+```TypeScript showLineNumbers
+interface StringArray {
+    [index: number]: string;
+}
+
+const myArray: StringArray = getStringArray();
+const secondItem = myArray[1]; // const secondItem = string;
+```
+
+This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
+
+> An index signature property type must be either a 'string' or 'number'.
+
+You are able to use different types if the index signature is a union of the property types:
+
+```TypeScript showLineNumbers
+interface NumberOrStringDictionary {
+    [index: string]: number | string;
+}
+```
