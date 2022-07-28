@@ -1,7 +1,60 @@
 ---
 title: Extending Types
-date: "Jul 22, 2022"
+date: "Jul 28, 2022"
 description: Pretty common to have types that might be more specific versions of other types...
 ---
 
-TBC: [Extending Types](https://www.typescriptlang.org/docs/handbook/2/objects.html#extending-types)
+It is pretty common to have types that might be more specific versions of other types. To avoid repeating fields from one type to another, we can extend the original type and add the new fields that are unique to the extended type.
+
+```TypeScript showLineNumbers
+interface BasicAddress {
+    name?: string;
+    street: string;
+    city: string;
+    country: string;
+    postalCode: string;
+}
+
+interface AddressWithUnit extends BasicAddress {
+    unit: string;
+}
+```
+
+The `extends` keyword on an `interface` allows us to effectively copy members from other named types, and add whatever new members we want. This can be useful for cutting down the amount of type declaration boilerplate we have to write, and for signaling intent that several different declarations of the same property might be related.
+
+An `interface` can also extend from multiple types:
+
+```TypeScript showLineNumbers
+interface Colorful {
+    color: string;
+}
+
+interface Circle {
+    radius: number;
+}
+
+interface ColorfulCircle extends Colorful, Circle {}
+
+const cc: ColorfulCircle = {
+    color: "red",
+    radius: 42,
+};
+```
+
+## Intersection Types
+
+TypeScript also provides another construct called _intersection types_ that is mainly used to combine existing object types. An intersection type is defined using the `&` operator.
+
+```TypeScript showLineNumbers
+interface Colorful {
+    color: string;
+}
+
+interface Circle {
+    radius: number;
+}
+
+type ColorfulCircle = Colorful & Circle;
+```
+
+We can also create intersection types directly on functions: `function draw(circle: Colorful & Circle) {}`
