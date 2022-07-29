@@ -4,4 +4,36 @@ date: "Jul 29, 2022"
 description: Generics is one of the main ways to create reusable types...
 ---
 
-TBC: [Generic Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html#generic-object-types)
+In a given case where we do not know for sure what will be the type of a given property, instead of declaring multiple types and using _overload functions_, for example:
+
+```TypeScript showLineNumbers
+interface NumberBox { contents: number };
+interface StringBox { contents: string };
+interface BooleanBox { contents: boolean };
+
+function setContents(box: StringBox, newContents: string): void;
+function setContents(box: NumberBox, newContents: number): void;
+function setContents(box: BooleanBox, newContents: boolean): void;
+function setContents(box: { contents: any }, newContents: any) {
+    box.contents = newContents;
+}
+```
+
+...but that's a ton of boilerplate. To make matters worse, later we might have to introduce even more types and overloads. Instead, we can make a _generic_ `Box` type which declares a _type parameter_.
+
+```TypeScript showLineNumbers
+interface Box<Type> { contents: Type };
+
+function setContents<Type>(box: Box<Type>, newContents: Type) {
+    box.contents = newContents;
+}
+```
+
+We could've defined our generic within an interface as well as within a type alias instead. These are both the same:
+
+```TypeScript showLineNumbers
+interface Box<Type> { contents: Type };
+type Box<Type> = { contents: Type };
+```
+
+However, since type aliases, unlike interfaces, can describe more than just object types, we can also use them to write other kinds of generic helper types. More on what this means later on...
