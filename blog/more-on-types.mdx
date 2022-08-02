@@ -1,0 +1,119 @@
+---
+title: More on Types
+date: "Aug 2, 2022"
+description: Generic object types are often just container types...
+---
+
+## The Array Type
+
+Generic object types are often container types that work independent from the type of element they contain. It's ideal for data structures to work this way so that they're re-usable across different data types.
+
+Just like we have been working with `number[]` and `string[]`, those are really shorthands for `Array<number>` and `Array<string>`.
+
+Modern JavaScript also provides other data structures which are generic, like `Map<K, V>` and `Set<T>`, and `Promise<T>`. All of this means is that because of how `Map`, `Set`, and `Promise` behave, they can work with any sets of types.
+
+## The `ReadonlyArray` Type
+
+This is a special type that describes arrays that shouldn't be changed by using `ReadonlyArray<string>`.
+
+Unlike `Array`, there isn't a `ReadonlyArray` constructor that we can use. Instead, we can assign regular `Array`s to `ReadonlyArray`s:
+
+```TypeScript showLineNumbers
+const roArray: ReadonlyArray<string> = ["red", "green", "blue"];
+const alsoRoArray: readonly string[] = ["red", "green", "blue"];
+```
+
+Just as TypeScript provides a shorthand syntax for `Array<Type>` with `Type[]`, it also provides a shorthand syntax for `ReadonlyArray<Type>` with `readonly Type[]`.
+
+Keep in mind that you cannot assign different types to `readonly` types.
+
+```TypeScript showLineNumbers
+let x: readonly string[] = [];
+let y: string[] = [];
+
+x = y; // Okay
+y = x; // Not okay
+
+// There is no bidirectional assignability.
+```
+
+## Tuple Types
+
+A _tuple type_ is another sort of `Array` type that knows exactly how many elements it contains, and exactly which types it contains at specific positions: `type StringNumberPair = [string, number]`.
+
+Like `ReadonlyArray`, it has no representation at runtime, but is significant to TypeScript. Describing arrays whos `0` index contains a `string` and whose `1` index contains a number.
+
+```TypeScript showLineNumbers
+function doSomething(pair: [string, number]) {
+    const a = pair[0]; // string
+    const b = pair[1]; // number
+}
+doSomething(['Hello', 42]);
+```
+
+We can also destructure tuples using JavaScript's array destructuring.
+
+```TypeScript showLineNumbers
+function doSomething(stringHash: [string, number]) {
+    const [inputString, hash] = stringHash;
+    console.log(inputString, hash);
+}
+```
+
+Other than those length checks, simple tuple types like these are equivalent to types which are versions of `Array`s that declare properties for specific indexes, and that declare `length` with a numeric literal type.
+
+```TypeScript showLineNumbers
+interface StringNumberPair {
+    // Specialized property
+    length: 2;
+    0: string;
+    1: number;
+}
+```
+
+Tuples do have support for optional properties but they can only come at the end, and also affect the type of `length`.
+
+```TypeScript showLineNumbers
+type Either2dOr3d = [number, number, number?];
+
+function setCoordinate(coord: Either2dOr3d) {
+    const [x, y, z] = coord;
+    // (property) length: 2 | 3
+    console.log(coord.length);
+}
+```
+
+### Tuples and Rest elements
+
+Tuples can also have rest elements, which have to be an array/tuple type.
+
+```TypeScript showLineNumbers
+type StringNumberBooleans = [string, number, ...boolean[]];
+```
+
+This type describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following. A tuple with a rest element, has no set 'length'.
+
+Tuples types can be used in rest parameters and arguments, like so:
+
+```TypeScript showLineNumbers
+function buttonInput(...args: [string, number, ...boolean[]]) {
+    const[ name, version, ...input] = args;
+}
+```
+
+### `readonly` Tuple Types
+
+Tuples tend to be created and left un-modified in most code, so annotating types as `readonly` tuples when possible is a good practice. This is also important given that array literals with `const` assertions will be inferred with `readonly` tuple types.
+
+```TypeScript showLineNumbers
+let point = [3, 4] as const;
+
+function distanceFromOrigin([x,y]: [number, number]) {
+    return Math.sqrt(x ** 2 + y ** 2);
+}
+
+distanceFromOrigin(poiint); // Not Okay
+// Argument of type 'readonly [3, 4]' is not assignable to parameter of type '[number, number]'.
+```
+
+Here, the function never modifies its elements, but expects a mutable tuple. The mutable tuple defined in the function can't guarantee `point`'s elements won't be mutated.
