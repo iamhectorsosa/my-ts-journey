@@ -1,0 +1,33 @@
+---
+title: The World of Generics
+date: "Aug 4, 2022"
+description: A major part of Software is building components that can be used again...
+---
+
+A _generic_ is a tool for creating reusable components that cna work over a variety of types rather than a single one. This allows users to consume these components and use their own types.
+
+While using `any` is certainly generic, in the sense that it will accept any and all types of arguments/parameers, we are actually losing information about the type when the function returns.
+
+Instead we capture the type of argument in such a way that we can also use it to denote what is being returned.
+
+```TypeScript showLineNumbers
+function identity<Type>(arg: Type): Type {
+    return arg;
+}
+```
+
+The type variable `Type` allows us to traffic that type information from one side of the function and out the other at return, working as a generic type that works over a range of types.
+
+## Working with Generic Type Variables
+
+The compiler will enforce that you use any generically typed parameters in the body of the function correctly. That is, that you actually treat these parameters as if they could be any and all types. For instance if you want to access the length property of an argument you might get something like this:
+
+```TypeScript showLineNumbers
+function loggingIdentity<Type>(arg: Type): Type {
+    console.log(arg.length);
+    // Property 'length' does not exist on type 'Type'.
+    return arg;
+}
+```
+
+Using a Generic implies that our type stands in for any and all types, so someone using this function could've passed a `number` instead, which does not have a `length` property.
